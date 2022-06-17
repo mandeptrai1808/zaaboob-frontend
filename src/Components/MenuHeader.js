@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import HomeIcon from '@mui/icons-material/Home';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import GroupIcon from '@mui/icons-material/Group';
@@ -13,11 +13,22 @@ import SearchIcon from '@mui/icons-material/Search';
 import {useSelector, useDispatch} from 'react-redux';
 
 import { NavLink, useNavigate } from "react-router-dom";
+import { brown } from '@mui/material/colors';
 
 export default function MenuHeader() {
 
+  let userData = localStorage.getItem("login_user");
+  userData = userData && JSON.parse(userData);
+
+  if(!userData) userData = {};
+
+  const navigate = useNavigate()
   const {isPage} = useSelector(state => state.MenuReducer);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!userData.id) navigate('/login') 
+  },[])
 
   return (
     <div className='w-full px-5 grid items-center grid-cols-10 fixed md:top-0 bottom-0 bg-white z-10 h-16 shadow-md border-t border-black'>
@@ -33,8 +44,8 @@ export default function MenuHeader() {
               })
             }}>
               {isPage === 0 ? 
-              <HomeIcon className='md:mx-10 border-b-4 border-black ' fontSize='large'/> : 
-              <HomeOutlinedIcon className='md:mx-10' fontSize='large'/>}
+              <HomeIcon sx={{color: brown[900]}} className='md:mx-10 border-b-4 border-black ' fontSize='large'/> : 
+              <HomeOutlinedIcon sx={{color: brown[900]}} className='md:mx-10' fontSize='large'/>}
             </NavLink>
 
             <NavLink to={'/'} onClick={() => {
@@ -44,8 +55,8 @@ export default function MenuHeader() {
               })
             }}>
               {isPage === 1 ? 
-              <GroupIcon className='md:mx-10 border-b-4 border-black ' fontSize='large'/> : 
-              <GroupOutlinedIcon className='md:mx-10' fontSize='large'/>}
+              <GroupIcon sx={{color: brown[900]}} className='md:mx-10 border-b-4 border-black ' fontSize='large'/> : 
+              <GroupOutlinedIcon sx={{color: brown[900]}} className='md:mx-10' fontSize='large'/>}
             </NavLink>
 
             
@@ -56,8 +67,8 @@ export default function MenuHeader() {
               })
             }}>
               {isPage === 2 ? 
-              <ChatIcon className='md:mx-10 border-b-4 border-black ' fontSize='large'/> : 
-              <ChatOutlinedIcon className='md:mx-10' fontSize='large'/>}
+              <ChatIcon sx={{color: brown[900]}} className='md:mx-10 border-b-4 border-black ' fontSize='large'/> : 
+              <ChatOutlinedIcon sx={{color: brown[900]}} className='md:mx-10' fontSize='large'/>}
             </NavLink>
 
             <NavLink to={'/'} onClick={() => {
@@ -67,8 +78,8 @@ export default function MenuHeader() {
               })
             }}>
               {isPage === 3 ? 
-              <PersonIcon className='md:mx-10 border-b-4 border-black ' fontSize='large'/> : 
-              <PersonOutlineOutlinedIcon className='md:mx-10' fontSize='large'/>}
+              <PersonIcon sx={{color: brown[900]}} className='md:mx-10 border-b-4 border-black ' fontSize='large'/> : 
+              <PersonOutlineOutlinedIcon sx={{color: brown[900]}} className='md:mx-10' fontSize='large'/>}
             </NavLink>
 
            </div>
@@ -81,7 +92,7 @@ export default function MenuHeader() {
               <NotificationsNoneIcon fontSize='large'/>
             </div>
             <div style={{
-              backgroundImage: `url(https://i.kym-cdn.com/photos/images/newsfeed/000/302/073/d83.png)`,
+              backgroundImage: `url(${userData.avatar})`,
               backgroundSize: 'cover',
               backgroundPosition:  'center'
             }} className="w-10 h-10 rounded-full shadow-md">

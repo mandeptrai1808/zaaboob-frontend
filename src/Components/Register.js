@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { Button } from "@mui/material";
-import { red, yellow } from "@mui/material/colors";
+import { useDispatch } from "react-redux";
+import { RegisterUser } from "../Redux/Actions/UserActions";
 export default function Register() {
+  const dispatch = useDispatch();
     const navigate = useNavigate();
     const [dataRegister, setDataRegister] = useState({
         name: '',
@@ -27,7 +29,8 @@ export default function Register() {
         // ref="form"
         onSubmit={(value) => {
           //   handleSubmit(value)
-          console.log(value);
+          dispatch(RegisterUser(dataRegister));
+          console.log(dataRegister);
         }}
         // onError={errors => console.log(errors)}
       >

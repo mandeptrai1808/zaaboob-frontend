@@ -1,18 +1,38 @@
 import { Button } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { useDispatch, useSelector } from "react-redux";
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
-import { yellow } from "@mui/material/colors";
+import FacebookLogin from 'react-facebook-login';
+import { LoginUser, LoginWithFacebook } from "../Redux/Actions/UserActions";
 export default function Login() {
+  let userData = localStorage.getItem("login_user");
+  userData = userData && JSON.parse(userData);
 
-    const navigate = useNavigate();
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {isLogin} = useSelector(state => state.UserReducer);
   const [dataLogin, setDataLogin] = useState({
     email: "",
     password: "",
   });
+
+
+
+  const responseFacebook = (response) => {
+    console.log(response);
+    if (response.id){
+      const {name, id} = response;
+      const avatar = response.picture.data.url;
+      dispatch(LoginWithFacebook({
+        name,avatar,email:id
+      }))
+      console.log({name, id, avatar})
+    }
+  }
+  //---------------------------------
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -22,9 +42,9 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = () => {
-    // your submit logic
-  };
+  useEffect(() => {
+    if (userData) navigate('/')
+  },[])
 
   return (
     <div className="w-full">
@@ -34,7 +54,8 @@ export default function Login() {
         // ref="form"
         onSubmit={(value) => {
           //   handleSubmit(value)
-          console.log(value);
+          dispatch(LoginUser(dataLogin))
+          console.log(dataLogin);
         }}
         // onError={errors => console.log(errors)}
       >
@@ -73,12 +94,18 @@ export default function Login() {
             Register now
           </span>
         </p>
-        <p className="mb-5">Or login with:</p>
+        <p className="mb-5">Or:</p>
         <div className="flex justify-center">
-            <div>
-                <GoogleIcon sx={{ color: yellow[900] }} fontSize="large" className="mx-2 duration-200 cursor-pointer hover:scale-125"/>
-                <FacebookRoundedIcon color="primary" fontSize="large" className="mx-2 duration-200 cursor-pointer hover:scale-125"/>
-            </div>
+        <FacebookLogin
+        size="small"
+              className="w-full"
+              appId="365424885678956"
+              autoLoad={true}
+              fields="name,email,picture"
+              scope="public_profile,user_friends"
+              callback={responseFacebook}
+              icon="fa-facebook" />
+          
         </div>
       </ValidatorForm>
     </div>
