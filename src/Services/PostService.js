@@ -51,4 +51,12 @@ export const PostService = {
       })
     },
 
+    CommentThisPost: (_data) => {
+      return axios({
+        url: `${BASE_URL}/posts/comment`,
+        method: "POST",
+        data: _data
+      })
+    }
+
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { red } from "@mui/material/colors";
 import { LikeThisPostApi, UnLikeThisPostApi } from "../Redux/Actions/PostActions";
+import CommentPlace from "./CommentPlace";
 
 export default function Post(props) {
   let userData = localStorage.getItem("login_user");
   userData = userData && JSON.parse(userData);
 
+const [showComment, setShowComment] = useState(false);
 
 
   const dispatch = useDispatch();
@@ -97,6 +99,7 @@ export default function Post(props) {
             </div> */}
         {contentImage()}
       </div>
+     
       <div className="flex justify-between items-center my-2">
         <div>
           <FavoriteIcon sx={{ color: red[300] }} />
@@ -105,7 +108,9 @@ export default function Post(props) {
         <div>
           <p className="m-0">{content.listCmt?.length} comments</p>
         </div>
+        
       </div>
+      
       <div className="flex justify-around border-t pt-2 border-slate-300">
         {content.listLike.find(
           (item) => item.userId == userData.id && item.postId == content.postDetail?.id
@@ -147,12 +152,17 @@ export default function Post(props) {
           </div>
         )}
 
-        <div className="w-1/3 mx-2 duration-200 py-2 text-center rounded-md hover:bg-slate-200">
+        <div onClick={() => {
+          setShowComment(!showComment)
+        }} className="w-1/3 mx-2 cursor-pointer duration-200 py-2 text-center rounded-md hover:bg-slate-200">
           <ModeCommentOutlinedIcon /> <span>Comment</span>
         </div>
         <div className="w-1/3 mx-2 duration-200 py-2 text-center rounded-md hover:bg-slate-200">
           <ShareOutlinedIcon /> <span>Share</span>
         </div>
+      </div>
+      <div>
+        {showComment ? <CommentPlace ownPostId={props.ownPostId} postInfo = {content}/> : ""}
       </div>
     </div>
   );

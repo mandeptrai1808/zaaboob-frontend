@@ -111,7 +111,7 @@ export default function UserPage() {
 
   const contentPosts = () => {
     return userPosts.map((item, index) => {
-      return <Post key={index} typeAction = "_USER" postIndex = {index} content={item} />;
+      return <Post key={index} typeAction = "_USER" ownPostId = {userId} postIndex = {index} content={item} />;
     });
   };
   useEffect(() => {

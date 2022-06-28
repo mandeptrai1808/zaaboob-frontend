@@ -81,3 +81,21 @@ export const UnLikeThisPostApi = (_data) => {
     }
   }
 }
+
+export const CommentThisPost = (_data, _userId) => {
+  return async (dispatch) => {
+    try {
+      let {data} = await PostService.CommentThisPost(_data);
+      console.log(_userId)
+
+      if (_userId){
+        console.log(_userId)
+        dispatch(GetPostsByUserId(_userId))
+      }
+      else dispatch(GetAllPost())
+      console.log(data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}

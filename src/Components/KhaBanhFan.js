@@ -17,7 +17,7 @@ export default function KhaBanhFan() {
     >
       <div className="relative">
         <div
-          className={`w-96 z-20 relative duration-100 rounded-full animate-spin${speed} h-96 border-4`}
+          className={`w-96 z-20 relative duration-100 rounded-full animate-spin h-96 border-4`}
         >
           <img alt="khabanh" src="/khabanhfan.png"></img>
         </div>

@@ -19,14 +19,14 @@ export default function Profile() {
 
     const contentPosts = () => {
         return userPosts.map((item, index) => {
-          return <Post key={index} typeAction = "_USER" postIndex = {index} content={item} />;
+          return <Post key={index} typeAction = "_USER" ownPostId={userData.id} postIndex = {index} content={item} />;
         });
       };
     useEffect(() => {
       dispatch(GetPostsByUserId(userData.id));
     }, [])
   return (
-    <div className='relative z-10 md:pt-10'>
+    <div className='relative z-10 md:pt-10 pb-20'>
         <div className='w-full h-72 bg-slate-400' style={{
             backgroundImage: `url(https://th.bing.com/th/id/R.646bb3bf4fea68a70dcd87c14a8ae55f?rik=dXnCQdw%2bgijJZw&riu=http%3a%2f%2fgetwallpapers.com%2fwallpaper%2ffull%2ff%2f5%2f8%2f1244590-peaceful-anime-wallpaper-1920x1080-for-meizu.jpg&ehk=uy18lux1zF2s7IROqMpBmcN7ReTdkWzqi2r2NP6t8uY%3d&risl=&pid=ImgRaw&r=0)`,
             backgroudPosition: 'center',
