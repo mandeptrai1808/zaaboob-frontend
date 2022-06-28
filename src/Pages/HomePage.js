@@ -11,6 +11,7 @@ export default function HomePage() {
 
   const contentPosts = () => {
     return allPosts.map((item, index) => {
+      if (item.postDetail?.status === "PUBLIC")
       return <Post key={index} typeAction = "" postIndex = {index} content={item} />;
     });
   };

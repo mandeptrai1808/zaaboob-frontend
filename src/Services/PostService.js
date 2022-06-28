@@ -57,6 +57,22 @@ export const PostService = {
         method: "POST",
         data: _data
       })
+    },
+
+    DeletePost: (_id) => {
+      return axios({
+        url: `${BASE_URL}/posts/delete/${_id}`,
+        method: "DELETE",
+
+      })
+    },
+
+    UpdatePostStatus: (_data) => {
+      return axios({
+        url: `${BASE_URL}/posts/update-status`,
+        method: "PUT",
+        data: _data
+      })
     }
 
 }

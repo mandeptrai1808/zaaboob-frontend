@@ -111,6 +111,8 @@ export default function UserPage() {
 
   const contentPosts = () => {
     return userPosts.map((item, index) => {
+      if (item.postDetail?.status === "PUBLIC")
+
       return <Post key={index} typeAction = "_USER" ownPostId = {userId} postIndex = {index} content={item} />;
     });
   };
