@@ -43,7 +43,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (userData) navigate('/')
+    if (userData) navigate(-1)
   },[])
 
   return (

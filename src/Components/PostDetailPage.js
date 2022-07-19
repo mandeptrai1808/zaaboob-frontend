@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ModeCommentOutlinedIcon from "@mui/icons-material/ModeCommentOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PublicIcon from "@mui/icons-material/Public";
 import HttpsIcon from "@mui/icons-material/Https";
 import dateFormat, { masks } from "dateformat";
@@ -21,16 +22,23 @@ import CommentPlace from "./CommentPlace";
 import SharePost from "./SharePost";
 
 const { Option } = Select;
-export default function Post(props) {
+export default function PostDetailPage(props) {
   let userData = localStorage.getItem("login_user");
   userData = userData && JSON.parse(userData);
+  if (!userData) userData = {};
 
   const navigate = useNavigate();
 
-  const [showComment, setShowComment] = useState(false);
+  const [showComment, setShowComment] = useState(true);
 
   const dispatch = useDispatch();
   const { content, postIndex, typeAction } = props;
+
+//   const [content, setContent] = useState(contentPost); 
+
+
+
+
 
   const contentPopover = () => {
     if (userData.id === content.ownOfPost?.id) {
@@ -46,7 +54,7 @@ export default function Post(props) {
                 },props.ownPostId))
                 console.log(value)
               }}
-              defaultValue={content.postDetail.status?.toString()}
+              defaultValue={content.postDetail?.status.toString()}
               style={{ width: 150 }}
             >
               <Option value="PUBLIC">
@@ -109,13 +117,16 @@ export default function Post(props) {
       });
   };
   return (
-    <div  className="w-full rounded-md p-5 bg-white shadow-md my-5">
+    <div  className="w-full rounded-md p-5 min-h-screen bg-white shadow-md my-5">
+      <div onClick={() => {
+        navigate(-1)
+      }} className="flex cursor-pointer items-center my-2 border-b pb-2 text-blue-500 hover:text-blue-200"> <ArrowBackIcon/> <p className="m-0">Back</p></div>
       <div className="flex justify-between">
-        <div className="flex cursor-pointer items-center pb-5">
+        <div className="flex items-center pb-5">
           <div
-          onClick={() => {
-            navigate(`/user/${content.ownOfPost.id}`)
-          }}
+            onClick={() => {
+              navigate(`/user/${content.ownOfPost.id}`)
+            }}
             style={{
               backgroundImage: `url(${content.ownOfPost?.avatar.replaceAll(
                 "\\",
@@ -124,12 +135,12 @@ export default function Post(props) {
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full cursor-pointer"
           ></div>
           <div>
             <p onClick={() => {
-            navigate(`/user/${content.ownOfPost.id}`)
-          }} className="mb-0 cursor-pointer hover:underline text-lg font-bold ml-5">
+              navigate(`/user/${content.ownOfPost.id}`)
+            }} className="mb-0 cursor-pointer hover:underline text-lg font-bold ml-5">
               {content.ownOfPost?.name}
             </p>
             <div className="flex items-center">
@@ -156,9 +167,7 @@ export default function Post(props) {
           </div>
         </Popover>
       </div>
-      <div onClick={() => {
-      navigate(`/post/${content.postDetail.id}`)
-    }}>
+      <div>
         {content.postDetail?.content.split("\n").map((str, idStr) => {
           return (
             <p className="m-0" key={idStr}>
@@ -167,9 +176,7 @@ export default function Post(props) {
           );
         })}
       </div>
-      <div onClick={() => {
-      navigate(`/post/${content.postDetail.id}`)
-    }} className="grid grid-cols-10 gap-1">
+      <div className="grid grid-cols-10 gap-1">
         {/* <div  style={{
                 backgroundImage: `url(&quot; ${url} &quot;)`,
                 backgroundSize: 'cover',
@@ -196,13 +203,11 @@ export default function Post(props) {
             item.userId == userData.id && item.postId == content.postDetail?.id
         ) ? (
           <div
-            onClick={() => {
-              dispatch({
-                type: `UNLIKE_THIS_POST${typeAction}`,
-                index: postIndex,
-                userId: userData.id,
-                postId: content.postDetail?.id,
-              });
+            onClick={() => {                                                                                    
+                dispatch({
+                    type: "UNLIKE_THIS_POST_PAGE",
+                    userId: userData.id
+                })
               dispatch(
                 UnLikeThisPostApi({
                   userId: userData.id,
@@ -217,9 +222,11 @@ export default function Post(props) {
         ) : (
           <div
             onClick={() => {
+                // let newContent = content;
+                // newContent.postDetail.listLike?.push({userId: userData.id, postId: content.postDetail?.id})
+                // setContent(newContent)
               dispatch({
-                type: `LIKE_THIS_POST${typeAction}`,
-                index: postIndex,
+                type: `LIKE_THIS_POST_PAGE`,
                 content: {
                   userId: userData.id,
                   postId: content.postDetail?.id,
@@ -238,26 +245,26 @@ export default function Post(props) {
           </div>
         )}
 
-        <div
+        {/* <div
           onClick={() => {
             setShowComment(!showComment);
           }}
           className="w-1/3 mx-2 cursor-pointer duration-200 py-2 text-center rounded-md hover:bg-slate-200"
         >
           <ModeCommentOutlinedIcon /> <span>Comment</span>
-        </div>
+        </div> */}
         <div onClick={() => {
             dispatch({
               type: "OPEN_MODEL",
               title: "Share Post",
               content: <SharePost postId = {content.postDetail?.id}/>
             })
-        }} className="w-1/3 mx-2 cursor-pointer duration-200 py-2 text-center rounded-md hover:bg-slate-200">
+        }} className="w-1/3 cursor-pointer mx-2 duration-200 py-2 text-center rounded-md hover:bg-slate-200">
           <ShareOutlinedIcon /> <span>Share</span>
         </div>
       </div>
       <div>
-        {showComment ? (
+        {showComment && content.postDetail ? (
           <CommentPlace ownPostId={props.ownPostId} postInfo={content} />
         ) : (
           ""

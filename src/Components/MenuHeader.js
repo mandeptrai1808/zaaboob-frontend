@@ -9,7 +9,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import ChatIcon from "@mui/icons-material/Chat";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SearchIcon from "@mui/icons-material/Search";
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Badge, Popover } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 
 import { NavLink, useNavigate } from "react-router-dom";
@@ -28,6 +29,26 @@ export default function MenuHeader() {
   const {isLogin} = useSelector(state => state.UserReducer);
 
   const dispatch = useDispatch();
+
+  const contentNotifications = <div>
+    <div className="grid grid-cols-10 border-b my-1 py-1">
+      <div className="w-8 h-8 rounded-full col-span-2" style={{
+        backgroundImage: `url(https://pics.me.me/thumb_create-meme-life-meme-fun-frog-leap-studios-avatar-53675931.png)`,
+        backgroundPosition: "center",
+        backgroundSize: "cover"
+      }}>
+      </div>
+      <div className="col-span-6 mt-2">
+        <p className="m-0">Mandeptrai da like anh cua ban</p>
+      </div>
+      <div className="col-span-2 flex justify-end w-full">
+        <button className="w-10 h-10 opacity-50  rounded-full hover:bg-slate-200">
+          <DeleteIcon/>
+        </button>
+      </div>
+    </div>
+  
+  </div>
 
   useEffect(() => {
     if (!userData.id) navigate("/login");
@@ -89,7 +110,7 @@ export default function MenuHeader() {
           </NavLink>
 
           <NavLink
-            to={"/"}
+            to={"/chats"}
             onClick={() => {
               dispatch({
                 type: "CHANGE_PAGE",
@@ -150,16 +171,23 @@ export default function MenuHeader() {
           setIsSearch(!isSearch)
         }} fontSize="large" className="cursor-pointer"/>
         </div>
-        <div className={`mr-2 w-10 h-10 ${isSearch ? "hidden" : "flex"} justify-center items-center rounded-full shadow-md`}>
+       
+       <Popover trigger={"click"} placement="bottomLeft" content={contentNotifications}>
+       <div className={`w-10 h-10 ${isSearch ? "hidden" : "flex"} justify-center items-center rounded-full shadow-md`}>
+        <Badge count={1}>
           <NotificationsNoneIcon fontSize="large" />
+        </Badge>
         </div>
+       </Popover>
+
+      
         <div
           style={{
             backgroundImage: `url(${userData.avatar?.replaceAll('\\', '/')})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-          className={`w-10 duration-500 h-10 rounded-full shadow-md ${isSearch ? "hidden" : "block"}`}
+          className={`w-10 ml-5 duration-500 h-10 rounded-full shadow-md ${isSearch ? "hidden" : "block"}`}
         ></div>
       </div>
     </div>

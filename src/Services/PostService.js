@@ -73,6 +73,13 @@ export const PostService = {
         method: "PUT",
         data: _data
       })
+    },
+
+    GetPostById: (_id) => {
+      return axios({
+        url: `${BASE_URL}/posts/byid/${_id}`,
+        method: "GET",
+      })
     }
 
 }

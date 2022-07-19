@@ -1,6 +1,7 @@
 const stateDefault = {
   allPosts: [],
   userPosts: [],
+  postPageData: {}
 };
 
 export const PostReducer = (state = stateDefault, action) => {
@@ -31,16 +32,31 @@ export const PostReducer = (state = stateDefault, action) => {
 
     case "UNLIKE_THIS_POST": {
       let arr = state.allPosts[action.index].listLike.filter(
-        (item) => item.userId !== action.userId && item.postId !== action.postId
+        (item) => item.userId !== action.userId
       );
+
 
       state.allPosts[action.index].listLike = arr;
       return { ...state };
     }
 
+    case "UNLIKE_THIS_POST_PAGE": {
+      let arr = state.postPageData.listLike.filter(
+        (item) => item.userId !== action.userId && item.postId !== action.postId
+      );
+
+      state.postPageData.listLike = arr;
+      return { ...state };
+    }
+
+    case "LIKE_THIS_POST_PAGE": {
+      state.postPageData.listLike.push(action.content);
+      return { ...state };
+    }
+
     case "UNLIKE_THIS_POST_USER": {
       let arr = state.userPosts[action.index].listLike.filter(
-        (item) => item.userId !== action.userId && item.postId !== action.postId
+        (item) => item.userId !== action.userId
       );
 
       state.userPosts[action.index].listLike = arr;
@@ -52,7 +68,10 @@ export const PostReducer = (state = stateDefault, action) => {
       return { ...state };
     }
 
-  
+    case "GET_POST_PAGE":{
+      state.postPageData = action.content
+      return {...state}
+    }
 
     default:
       return { ...state };

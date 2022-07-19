@@ -9,7 +9,8 @@ const { Search } = Input;
 export default function CommentPlace(props) {
   let userData = localStorage.getItem("login_user");
   userData = userData && JSON.parse(userData);
-
+  if (!userData) userData = {};
+  
   const dispatch = useDispatch();
   
 

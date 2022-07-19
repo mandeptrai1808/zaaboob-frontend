@@ -11,6 +11,9 @@ import Friends from './Pages/Friends';
 import BauCua from './Pages/BauCua';
 import UserPage from './Pages/UserPage';
 import KhaBanhFan from './Components/KhaBanhFan';
+import PostPage from './Pages/PostPage';
+import Chat from './Pages/Chat';
+import ChatDetail from './Pages/ChatDetail';
 
 function App() {
 
@@ -24,9 +27,11 @@ function App() {
         <Route path='/friends' element={<HomeTemplate component={<Friends/>}/>}/>
         <Route path='/login' element={<UserFormTemplate component={<Login/>}/>}/>
         <Route path='/register' element={<UserFormTemplate component={<Register/>}/>}/>
-        <Route path='/chats' element={<HomeTemplate component={<BauCua/>}/>}/>
+        <Route path='/chats' element={<HomeTemplate component={<Chat/>}/>}/>
+        <Route path='/chats/detail/:roomId' element={<HomeTemplate component={<ChatDetail/>}/>}/>
         <Route path='/user/:userId' element={<HomeTemplate component={<UserPage/>}/>}/>
         {/* <Route path='/khabanh' element={<HomeTemplate component={<KhaBanhFan/>}/>}/> */}
+        <Route path='/post/:postId' element={<HomeTemplate component={<PostPage/>}/>}/>
 
       </Routes>
     </BrowserRouter>

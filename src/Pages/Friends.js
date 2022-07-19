@@ -9,6 +9,7 @@ import ChatIcon from '@mui/icons-material/Chat';
 import AddFriend from "../Components/AddFriend";
 import CheckIcon from '@mui/icons-material/Check';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { SendMessage } from "../Redux/Actions/ChatAction";
 const { Search } = Input;
 export default function Friends() {
   let userData = localStorage.getItem("login_user");
@@ -50,6 +51,12 @@ export default function Friends() {
     })
     dispatch(DeleteRequestFriend({userGet: userData.id, userSend: _userSend}))
     dispatch(AddFriendAPI({userId: userData.id, friendId: _userSend}));
+    dispatch(SendMessage({
+      roomId: userData.id + _userSend,
+      content: "The two have become friends",
+      status: "SYSTEM",
+      userSendId: userData.id
+    }))
   }
 
   const vistUserInfo = (_id) => {
@@ -82,7 +89,7 @@ export default function Friends() {
           </div>
         </div>
         <div className="md:flex hidden text-right  flex-col">
-         <Button type="primary" className="w-20 mb-2">Accept</Button>
+         <Button type="primary" className="w-20 mb-2" onClick={(index)=>AcceptRequestBtn(index,item.user?.id)}>Accept</Button>
          <Button className="w-20"  onClick={index => DeleteRequest(index,item.user?.id)}>Delete</Button>
         </div>
         <div className="md:hidden flex text-right  flex-col">
@@ -120,7 +127,9 @@ export default function Friends() {
         </div>
         <div>
           {(usersIsFriend.find(user => user.user?.id === item.user?.id)) ?
-           <Button type="primary"><ChatIcon/></Button>:
+           <Button onClick={() => {
+            navigate(`/chats/detail/${item.user?.id+ userData.id}`)
+           }} type="primary"><ChatIcon/></Button>:
            <Button onClick={() => {
              addFriendBtn(item.user)
            }} type="danger"><PersonAddIcon/></Button> }
@@ -190,7 +199,9 @@ export default function Friends() {
           </div>
         </div>
         <div>
-          <Button type="primary"><ChatIcon/></Button>
+          <Button onClick={() => {
+            navigate(`/chats/detail/${item.user?.id+ userData.id}`)
+           }} type="primary"><ChatIcon/></Button>
         </div>
       </div>
     );

@@ -46,7 +46,7 @@ export const CreateNewPostWithImage = (_dataNewPost, _listImg) => {
   return async (dispatch) => {
     try {
       let { data } = await PostService.CreateNewPost(_dataNewPost);
-      console.log(data);
+      // console.log(data);
       _listImg.map(async (item) => {
         await PostService.UploadImageServer(data.id, item, "PostImage");
         // console.log(data);
@@ -85,12 +85,13 @@ export const CommentThisPost = (_data, _userId) => {
   return async (dispatch) => {
     try {
       let { data } = await PostService.CommentThisPost(_data);
+      dispatch(GetPostById(_data.postId))
       console.log(_userId);
 
       if (_userId) {
         dispatch(GetPostsByUserId(_userId));
       } else dispatch(GetAllPost());
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -104,7 +105,7 @@ export const DeletePost = (_id, _userId) => {
       if (_userId) {
         dispatch(GetPostsByUserId(_userId));
       } else dispatch(GetAllPost());
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -118,9 +119,24 @@ export const UpdatePostStatus = (_data, _userId) => {
       if (_userId) {
         dispatch(GetPostsByUserId(_userId));
       } else dispatch(GetAllPost());
-      console.log(data);
+      // console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
 };
+
+export const GetPostById = (_id) => {
+  return async (dispatch) => {
+    try {
+      let {data} = await PostService.GetPostById(_id);
+      dispatch({
+        type: "GET_POST_PAGE",
+        content: data
+      })
+      // console.log(data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
