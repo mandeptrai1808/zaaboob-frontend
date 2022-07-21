@@ -178,8 +178,10 @@ export default function ChatBoard() {
   });
 
   useEffect(() => {
-    scrollToBottom();
-    dispatch(GetMessages(roomId, roomId - userData.id));
+    if (roomId){
+      scrollToBottom();
+      dispatch(GetMessages(roomId, roomId - userData.id));
+    }
   }, []);
   useEffect(() => {
     scrollToBottomSmooth();

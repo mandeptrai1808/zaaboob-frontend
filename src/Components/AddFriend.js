@@ -6,6 +6,8 @@ import {
   getRequestHasSend,
   sendRequestFriend,
 } from "../Redux/Actions/UserActions";
+import { CreateNewPost } from "../Redux/Actions/PostActions";
+import { CreateNotification } from "../Redux/Actions/NotificationAction";
 const { TextArea } = Input;
 export default function AddFriend(props) {
   let userData = localStorage.getItem("login_user");
@@ -78,6 +80,12 @@ export default function AddFriend(props) {
                 type: "ADD_REQUEST",
                 content: dataRequest
             })
+            dispatch(CreateNotification({
+              userId: props.userInfo?.id,
+              content: "want to make friend with you",
+              userSendId: userData.id,
+              status: "REQUEST"
+            }))
             dispatch(sendRequestFriend(dataRequest));
           }}
           className="w-full"

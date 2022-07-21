@@ -8,6 +8,7 @@ import { ModelReducer } from "../Reducers/ModelReducer";
 import { LoadingReducer } from "../Reducers/LoadingReducer";
 import { FileImageReducer } from "../Reducers/FileImageReducer";
 import { ChatReducer } from "../Reducers/ChatReducer";
+import { NotificationReducer } from "../Reducers/NotificationReducer";
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
    ModelReducer,
    LoadingReducer,
    FileImageReducer,
-   ChatReducer
+   ChatReducer,
+   NotificationReducer
 });
 
 export const store = createStore(rootReducer, applyMiddleware(thunk));

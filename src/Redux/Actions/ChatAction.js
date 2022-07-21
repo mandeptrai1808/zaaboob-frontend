@@ -15,7 +15,7 @@ export const GetHistoriesChat = (_id) => {
   };
 };
 
-export const GetMessages = (_roomId, _userId) => {
+export const GetMessages = (_roomId, _friendId, ) => {
   return async (dispatch) => {
     try {
       let { data } = await ChatService.getMessages(_roomId);
@@ -23,7 +23,7 @@ export const GetMessages = (_roomId, _userId) => {
         type: "GET_MESSAGES",
         content: data,
       });
-      let user = await UserServices.GetUserByUserId(_userId);
+      let user = await UserServices.GetUserByUserId(_friendId);
 
       dispatch({
         type: "GET_USER_CHAT_DATA",
@@ -79,3 +79,13 @@ export const PushHistories = (_data) => {
     }
   };
 };
+
+export const SeenMessages = (_roomId, _userId) => {
+  return async (dispatch) => {
+    try {
+      let {data} = await ChatService.seenMessages(_roomId, _userId);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}

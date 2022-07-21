@@ -29,6 +29,11 @@ export const ChatReducer = (state = stateDefault, action) => {
       state.messages.push(action.content);
       return {...state}
     }
+
+    case "SEEN_MESSAGE": {
+      state.chatHistories[action.id].messNotSeen = 0;
+      return {...state}
+    }
   
     default:
         return {...state}

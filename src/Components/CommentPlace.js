@@ -4,6 +4,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useDispatch } from "react-redux";
 import { CommentThisPost } from "../Redux/Actions/PostActions";
 import dateFormat, { masks } from "dateformat";
+import { CreateNotification } from "../Redux/Actions/NotificationAction";
 const { Search } = Input;
 
 export default function CommentPlace(props) {
@@ -75,6 +76,13 @@ export default function CommentPlace(props) {
                   content: value,
                 }, props.ownPostId)
               );
+              if (props.postInfo?.postDetail.userId != userData.id)
+              dispatch(CreateNotification({
+                userId: props.postInfo?.postDetail.userId,
+                content: "comment your post!",
+                userSendId: userData.id,
+                postId: props.postInfo?.postDetail.id
+              }));
               setDataCmt('');
             }}
           />

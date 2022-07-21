@@ -16,6 +16,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { brown } from "@mui/material/colors";
 import { Input } from "@mui/material";
+import Notification from "./Notification";
+import { GetNotifications } from "../Redux/Actions/NotificationAction";
 
 export default function MenuHeader() {
   let userData = localStorage.getItem("login_user");
@@ -27,31 +29,15 @@ export default function MenuHeader() {
   const navigate = useNavigate();
   const { isPage } = useSelector((state) => state.MenuReducer);
   const {isLogin} = useSelector(state => state.UserReducer);
+  const {listNotification} = useSelector(state => state.NotificationReducer);
 
   const dispatch = useDispatch();
 
-  const contentNotifications = <div>
-    <div className="grid grid-cols-10 border-b my-1 py-1">
-      <div className="w-8 h-8 rounded-full col-span-2" style={{
-        backgroundImage: `url(https://pics.me.me/thumb_create-meme-life-meme-fun-frog-leap-studios-avatar-53675931.png)`,
-        backgroundPosition: "center",
-        backgroundSize: "cover"
-      }}>
-      </div>
-      <div className="col-span-6 mt-2">
-        <p className="m-0">Mandeptrai da like anh cua ban</p>
-      </div>
-      <div className="col-span-2 flex justify-end w-full">
-        <button className="w-10 h-10 opacity-50  rounded-full hover:bg-slate-200">
-          <DeleteIcon/>
-        </button>
-      </div>
-    </div>
-  
-  </div>
 
   useEffect(() => {
     if (!userData.id) navigate("/login");
+    dispatch(GetNotifications(userData.id))
+
   }, []);
 
   return (
@@ -172,9 +158,9 @@ export default function MenuHeader() {
         }} fontSize="large" className="cursor-pointer"/>
         </div>
        
-       <Popover trigger={"click"} placement="bottomLeft" content={contentNotifications}>
+       <Popover trigger={"click"} placement="bottomLeft" content={<Notification notification={listNotification}/>}>
        <div className={`w-10 h-10 ${isSearch ? "hidden" : "flex"} justify-center items-center rounded-full shadow-md`}>
-        <Badge count={1}>
+        <Badge count={listNotification.length}>
           <NotificationsNoneIcon fontSize="large" />
         </Badge>
         </div>

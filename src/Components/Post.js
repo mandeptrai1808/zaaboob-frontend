@@ -19,6 +19,7 @@ import {
 } from "../Redux/Actions/PostActions";
 import CommentPlace from "./CommentPlace";
 import SharePost from "./SharePost";
+import { CreateNotification } from "../Redux/Actions/NotificationAction";
 
 const { Option } = Select;
 export default function Post(props) {
@@ -225,6 +226,15 @@ export default function Post(props) {
                   postId: content.postDetail?.id,
                 },
               });
+              if (content.postDetail?.userId != userData.id)
+              dispatch(CreateNotification({
+                userId: content.postDetail?.userId,
+                content: "like your post!",
+                userSendId: userData.id,
+                postId: content.postDetail?.id,
+                status: "NORMAL"
+              }));
+
               dispatch(
                 LikeThisPostApi({
                   userId: userData.id,

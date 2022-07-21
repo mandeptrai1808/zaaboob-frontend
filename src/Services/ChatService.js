@@ -43,5 +43,12 @@ export const ChatService = {
         data: _data,
         method: "POST"
       })
+    },
+
+    seenMessages: (_roomId, _userId) => {
+      return axios({
+        url: `${BASE_URL}/messengers/seenmess/${_roomId}/${_userId}`,
+        method: "PUT"
+      })      
     }
 }
