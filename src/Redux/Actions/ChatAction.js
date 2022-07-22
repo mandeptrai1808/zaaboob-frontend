@@ -1,3 +1,4 @@
+import { ResetMessage } from "../../Components/SoketIo";
 import { ChatService } from "../../Services/ChatService";
 import { UserServices } from "../../Services/UserServices";
 
@@ -15,7 +16,7 @@ export const GetHistoriesChat = (_id) => {
   };
 };
 
-export const GetMessages = (_roomId, _friendId, ) => {
+export const GetMessages = (_roomId, _friendId ) => {
   return async (dispatch) => {
     try {
       let { data } = await ChatService.getMessages(_roomId);
@@ -23,12 +24,14 @@ export const GetMessages = (_roomId, _friendId, ) => {
         type: "GET_MESSAGES",
         content: data,
       });
-      let user = await UserServices.GetUserByUserId(_friendId);
-
-      dispatch({
-        type: "GET_USER_CHAT_DATA",
-        content: user.data,
-      });
+      if (_friendId){
+        let user = await UserServices.GetUserByUserId(_friendId);
+  
+        dispatch({
+          type: "GET_USER_CHAT_DATA",
+          content: user.data,
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -46,6 +49,7 @@ export const SendMessage = (_data) => {
         type: "GET_MESSAGES",
         content: messages.data,
       });
+      ResetMessage(_data.roomId - _data.userSendId, _data.userSendId)
     } catch (error) {
       console.log(error);
     }
@@ -59,6 +63,7 @@ export const SendImageMess = (_userSendId, _roomId, _dataImg) => {
       let messages = await ChatService.getMessages(_roomId);
       dispatch(PushHistories({userId: _roomId - _userSendId, friendId: _userSendId}))
       dispatch(PushHistories({userId: _userSendId, friendId: _roomId - _userSendId}))
+      ResetMessage(_roomId - _userSendId, _userSendId)
       dispatch({
         type: "GET_MESSAGES",
         content: messages.data,

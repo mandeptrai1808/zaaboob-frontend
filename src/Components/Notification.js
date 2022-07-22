@@ -33,7 +33,7 @@ export default function Notification(props) {
   };
 
   const content = props.notification.map((item, index) => {
-    if (item.status === "NORMAL")
+    if (item.status == "NORMAL" || item.status == null)
       return (
         <div
           key={index}

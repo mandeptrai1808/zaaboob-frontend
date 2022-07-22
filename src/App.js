@@ -14,16 +14,20 @@ import KhaBanhFan from './Components/KhaBanhFan';
 import PostPage from './Pages/PostPage';
 import Chat from './Pages/Chat';
 import ChatDetail from './Pages/ChatDetail';
+import About from './Pages/About';
+import SoketIo from './Components/SoketIo';
 
 function App() {
 
   return (
     <div className="App">
+      <SoketIo/>
       <ModelTemplate/>
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<HomeTemplate component={<HomePage/>}/>}/>
         <Route path='/profile' element={<HomeTemplate component={<Profile/>}/>}/>
+        <Route path='/about' element={<About/>}/>
         <Route path='/friends' element={<HomeTemplate component={<Friends/>}/>}/>
         <Route path='/login' element={<UserFormTemplate component={<Login/>}/>}/>
         <Route path='/register' element={<UserFormTemplate component={<Register/>}/>}/>

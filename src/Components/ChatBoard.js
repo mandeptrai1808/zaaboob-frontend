@@ -22,7 +22,6 @@ export default function ChatBoard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { messages, userChatData } = useSelector((state) => state.ChatReducer);
-
   const [textMess, setTextMess] = useState('');
 
   const messagesEndRef = useRef(null);
@@ -224,10 +223,16 @@ export default function ChatBoard() {
       </div>
 
       <div className="overflow-y-auto  md:h-100 h-screen md:py-5 py-20">
-        {contentMessages}
+        { (userChatData.id) ? contentMessages : 
+         <div className="flex justify-center items-center h-96">
+         <div className="text-3xl text-center ">
+         <p>Nhắn tin tẹt ga với các Homie của bạn ở đây</p>
+         <p>Hehehe</p>
+         </div>
+       </div>}
         <div ref={messagesEndRef} />
       </div>
-
+      {(userChatData.id) ? 
       <div className="w-full h-20 md:absolute fixed bottom-0 right-0 border-t-2 px-5 flex items-center bg-white">
         <div className="w-full flex">
           <Search
@@ -253,6 +258,8 @@ export default function ChatBoard() {
           </Button>
         </div>
       </div>
+      : 
+     ""}
     </div>
   );
 }

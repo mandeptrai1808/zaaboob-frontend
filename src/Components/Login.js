@@ -43,7 +43,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (userData) navigate(-1)
+    if (userData) navigate('/')
   },[])
 
   return (
@@ -100,7 +100,7 @@ export default function Login() {
         size="small"
               className="w-full"
               appId="365424885678956"
-              autoLoad={true}
+              autoLoad={false}
               fields="name,email,picture"
               scope="public_profile,user_friends"
               callback={responseFacebook}

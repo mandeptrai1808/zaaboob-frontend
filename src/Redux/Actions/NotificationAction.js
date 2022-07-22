@@ -1,3 +1,4 @@
+import { ResetNotificationSocket } from "../../Components/SoketIo";
 import { NotificationService } from "../../Services/NotificationService"
 
 
@@ -5,6 +6,7 @@ export const GetNotifications = (_userId) => {
   return async (dispatch) => {
     try {
         let {data} = await NotificationService.getNotification(_userId);
+        console.log(data)
         dispatch({
             type: "GET_NOTIFICATION",
             content: data
@@ -30,6 +32,7 @@ export const CreateNotification = (_data) => {
   return async (dispatch) => {
     try {
         let {data} = await NotificationService.createNotification(_data);
+        ResetNotificationSocket(_data.userId)
     } catch (error) {
         
     }

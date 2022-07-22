@@ -9,7 +9,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import ChatIcon from "@mui/icons-material/Chat";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SearchIcon from "@mui/icons-material/Search";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Badge, Popover } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -25,20 +27,54 @@ export default function MenuHeader() {
 
   if (!userData) userData = {};
   const [isSearch, setIsSearch] = useState(false);
+  const [haveNotSeenMess, setHaveNotSeenMess] = useState(false);
+  console.log(haveNotSeenMess)
 
   const navigate = useNavigate();
   const { isPage } = useSelector((state) => state.MenuReducer);
   const {isLogin} = useSelector(state => state.UserReducer);
   const {listNotification} = useSelector(state => state.NotificationReducer);
+  const { chatHistories } = useSelector(
+    (state) => state.ChatReducer
+  );
 
   const dispatch = useDispatch();
 
+
+  const contentAvatar = <div className="w-28 text-center">
+    <p onClick={() => {
+      navigate('/profile');
+        dispatch({
+          type: "CHANGE_PAGE",
+          page: 3,
+        });
+    }} className="m-0 py-2 border-b cursor-pointer hover:bg-slate-200"> <PersonOutlineOutlinedIcon/> Profile</p>
+    <p onClick={() => {
+      navigate('/about');
+    }} className="m-0 py-2 border-b cursor-pointer hover:bg-slate-200"> <InfoOutlinedIcon/> About</p>
+    <p onClick={() => {
+         localStorage.clear();
+         sessionStorage.clear();
+          navigate("/login");
+          // dispatch({ type: "IS_LOGIN" });
+        }} className="m-0 py-2 border-b cursor-pointer hover:bg-slate-200 text-red-500 font-bold"> <LogoutIcon/> Log out</p>
+  </div>
 
   useEffect(() => {
     if (!userData.id) navigate("/login");
     dispatch(GetNotifications(userData.id))
 
   }, []);
+
+  useEffect(() => {
+    var temp = false;
+    chatHistories.map((item) => {
+      if (item.messNotSeen > 0){
+        temp= true
+      }
+    })
+    setHaveNotSeenMess(temp)
+  }, [chatHistories])
 
   return (
     <div className="w-full px-5 grid items-center grid-cols-10 fixed md:top-0 bottom-0 bg-white z-20 h-16 shadow-md border-t border-black">
@@ -104,19 +140,24 @@ export default function MenuHeader() {
               });
             }}
           >
+            <div className="md:mx-10">
+
+            <Badge  dot={haveNotSeenMess}>
             {isPage === 2 ? (
               <ChatIcon
                 sx={{ color: brown[900] }}
-                className="md:mx-10 border-b-4 border-black "
+                className=" border-b-4 border-black "
                 fontSize="large"
               />
             ) : (
               <ChatOutlinedIcon
                 sx={{ color: brown[900] }}
-                className="md:mx-10"
                 fontSize="large"
               />
             )}
+            </Badge>
+            </div>
+          
           </NavLink>
 
           <NavLink
@@ -159,7 +200,7 @@ export default function MenuHeader() {
         </div>
        
        <Popover trigger={"click"} placement="bottomLeft" content={<Notification notification={listNotification}/>}>
-       <div className={`w-10 h-10 ${isSearch ? "hidden" : "flex"} justify-center items-center rounded-full shadow-md`}>
+       <div className={`w-10 h-10 ${isSearch ? "hidden" : "flex"} cursor-pointer justify-center items-center rounded-full shadow-md`}>
         <Badge count={listNotification.length}>
           <NotificationsNoneIcon fontSize="large" />
         </Badge>
@@ -167,6 +208,7 @@ export default function MenuHeader() {
        </Popover>
 
       
+        <Popover trigger={"click"} placement="bottomLeft" content={contentAvatar}>
         <div
           style={{
             backgroundImage: `url(${userData.avatar?.replaceAll('\\', '/')})`,
@@ -175,6 +217,7 @@ export default function MenuHeader() {
           }}
           className={`w-10 ml-5 duration-500 h-10 rounded-full shadow-md ${isSearch ? "hidden" : "block"}`}
         ></div>
+        </Popover>
       </div>
     </div>
   );

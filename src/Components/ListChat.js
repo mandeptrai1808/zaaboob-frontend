@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { GetHistoriesChat, GetMessages, SeenMessages } from "../Redux/Actions/ChatAction";
-
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 export default function ListChat() {
   let userData = localStorage.getItem("login_user");
   userData = userData && JSON.parse(userData);
@@ -74,7 +74,18 @@ export default function ListChat() {
 
   return (
     <div className="relative z-10 md:pt-10 h-full bg-white pt-14 shadow-md pb-20">
-      {contentPeopleChat}
+      { (chatHistories.length>0) ? contentPeopleChat : 
+      <div className="px-5 py-10 text-xl">
+        <p>Chưa có bạn bè?</p>  
+        <div onClick={() => {
+            navigate('/friends')
+            dispatch({
+              type: "CHANGE_PAGE",
+              page: 1,
+            });
+       
+        }} className="text-blue-500 hover:text-blue-300 cursor-pointer"> <span>Kết bạn ngay </span> <PersonAddAltIcon/> </div>
+      </div>}
     </div>
   );
 }

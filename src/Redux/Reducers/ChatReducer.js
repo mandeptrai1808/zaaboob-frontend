@@ -1,7 +1,8 @@
 const stateDefault = {
     chatHistories: [],
     messages: [],
-    userChatData: {}
+    userChatData: {},
+    haveMessNotSeen: false
 }
 
 export const ChatReducer = (state = stateDefault, action) => {
@@ -32,6 +33,16 @@ export const ChatReducer = (state = stateDefault, action) => {
 
     case "SEEN_MESSAGE": {
       state.chatHistories[action.id].messNotSeen = 0;
+      return {...state}
+    }
+
+    case "HAVE_MESS_NOT_SEND":{
+      state.haveMessNotSeen = true;
+      return {...state}
+    }
+
+    case "RESET_MESS_NOT_SEND":{
+      state.haveMessNotSeen = false;
       return {...state}
     }
   
