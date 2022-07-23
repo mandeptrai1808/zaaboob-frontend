@@ -15,10 +15,5 @@ Wait, all of this will not working if you dont run server (back-end code) before
 So, you can get back-end source [here](https://github.com/mandeptrai1808/zaaboob-backend)
 <ul>
 <li>Step 1: Clone it to your computer </li>
-<li>Step 2: Create your database </li>
-<li>Step 3: Set up host name, user, password , dialect of database in file config.js </li>
-<li>Step 4: Migrate model to database, type "npx sequelize db:migrate" in your terminal </li>
-<li>Step 5: type "npm run start" or "npm run dev" if you want to use nodemon</li>
-<li>Step 6: You can try APIs on Postman here: https://app.getpostman.com/run-collection/4ba991ca3708a1899596?action=collection%2Fimport </br>
-or move to source code front-end <a href="https://github.com/mandeptrai1808/zaaboob-frontend">right here</a></li>
+<li>Step 2: Run "npm start" in your terminal</li>
 </ul>
