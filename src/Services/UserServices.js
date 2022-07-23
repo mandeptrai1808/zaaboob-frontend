@@ -35,6 +35,13 @@ export const UserServices = {
         },
       })
     },
+    UpdateUser: (_id,_data) => {
+      return axios({
+        url: `${BASE_URL}/users/update/${_id}`,
+        method: "PUT",
+        data: _data
+      })
+    },
     GetAllUser: () => {
       return axios({
         url: `${BASE_URL}/users/getall`,

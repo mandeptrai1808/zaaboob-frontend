@@ -20,6 +20,7 @@ import {
 } from "../Redux/Actions/PostActions";
 import CommentPlace from "./CommentPlace";
 import SharePost from "./SharePost";
+import LoadingPage from "./LoadingPage";
 
 const { Option } = Select;
 export default function PostDetailPage(props) {
@@ -118,6 +119,7 @@ export default function PostDetailPage(props) {
   };
   return (
     <div  className="w-full rounded-md p-5 min-h-screen bg-white shadow-md my-5">
+    
       <div onClick={() => {
         navigate(-1)
       }} className="flex cursor-pointer items-center my-2 border-b pb-2 text-blue-500 hover:text-blue-200"> <ArrowBackIcon/> <p className="m-0">Back</p></div>

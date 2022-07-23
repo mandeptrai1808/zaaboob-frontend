@@ -241,6 +241,8 @@ export default function Friends() {
         </div>
 
         {/* Request friend  */}
+        {(usersIsFriend.length > 0 || usersNotFriend.length>0) ?
+        <div>
         <div className="my-5 border-t">
             <h1>Request make friend:</h1>
             { getRequest[0] ? requestContent : "No request!"}
@@ -253,6 +255,12 @@ export default function Friends() {
           <h1>Your list friends:</h1>
           {isFriendList}
         </div>
+        </div>
+        : <div>
+          <Skeleton avatar active />
+          <Skeleton avatar active />
+          <Skeleton avatar active />
+        </div> }
       </div>
     </div>
   );

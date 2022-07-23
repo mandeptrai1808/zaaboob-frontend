@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button } from "antd";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -14,6 +14,7 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {isLogin} = useSelector(state => state.UserReducer);
+  const {loginLoading} = useSelector(state => state.LoadingReducer)
   const [dataLogin, setDataLogin] = useState({
     email: "",
     password: "",
@@ -54,8 +55,8 @@ export default function Login() {
         // ref="form"
         onSubmit={(value) => {
           //   handleSubmit(value)
+          dispatch({type: "IS_LOADING_LOGIN"})
           dispatch(LoginUser(dataLogin))
-          console.log(dataLogin);
         }}
         // onError={errors => console.log(errors)}
       >
@@ -83,8 +84,8 @@ export default function Login() {
           validators={["required"]}
           errorMessages={["this field is required"]}
         />
-        <Button className="w-full" type="submit" variant="contained">
-          Login
+        <Button loading={loginLoading} className="w-full" type="primary" htmlType="submit">
+          <p>Login</p>
         </Button>
         <p className="my-5">
           Don't have account?{" "}

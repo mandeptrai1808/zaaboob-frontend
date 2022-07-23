@@ -170,7 +170,7 @@ export default function ChatBoard() {
     }
 
     if (item.content.status === "SYSTEM"){
-      return <div className="w-full py-2 mb-5 flex justify-center">
+      return <div key={index} className="w-full py-2 mb-5 flex justify-center">
           <p className="mt-0 bg-slate-400 rounded-md w-fit px-2 text-white">{item.content?.content}</p>
       </div>
     }

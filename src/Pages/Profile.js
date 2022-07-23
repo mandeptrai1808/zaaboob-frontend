@@ -5,7 +5,12 @@ import CreatePost from '../Components/CreatePost';
 import { GetPostsByUserId } from '../Redux/Actions/PostActions';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import Post from '../Components/Post';
+import { Skeleton, Typography  } from "antd";
+
 import UploadImageProfile from '../Components/UploadImageProfile';
+import { UpdateUser } from '../Redux/Actions/UserActions';
+
+const { Paragraph } = Typography;
 export default function Profile() {
 
     let userData = localStorage.getItem("login_user");
@@ -22,6 +27,11 @@ export default function Profile() {
           return <Post key={index} typeAction = "_USER" ownPostId={userData.id} postIndex = {index} content={item} />;
         });
       };
+
+    const UpdateName = (_name) => {
+      let data = {name: _name};
+      dispatch(UpdateUser(userData.id,data));
+    }
     useEffect(() => {
       dispatch(GetPostsByUserId(userData.id));
     }, [])
@@ -56,12 +66,23 @@ export default function Profile() {
         </div>
 
         <div className='ml-10 hidden md:block'>
-            <h1 className='text-3xl font-bold'>{userData.name}</h1>
+            <Paragraph editable={{
+          tooltip: 'click to edit text',
+          onChange: (value) => {
+            UpdateName(value)
+          }
+        }} className='text-3xl font-bold' style={{marginBottom: 10}}>{userData.name}</Paragraph>
             <p className='text- mb-0'>1,4K friends</p>
         </div>
        </div>
        <div className='mt-28 block md:hidden w-full text-center'>
-            <h1 className='text-3xl'>{userData.name}</h1>
+            <Paragraph editable={{
+          tooltip: 'click to edit text',
+          onChange: (value) => {
+            UpdateName(value)
+          }
+          // triggerType: chooseTrigger,
+        }} className='text-3xl'>{userData.name}</Paragraph>
             <p className='text- mb-0'>1,4K friends</p>
         </div>
 
@@ -83,7 +104,11 @@ export default function Profile() {
             </div>
 
             <div>
-            {contentPosts()}
+            { (userPosts) ? contentPosts() : 
+            <div>
+              <Skeleton active avatar paragraph={{ rows: 5 }} />
+              <Skeleton active avatar paragraph={{ rows: 5 }} />
+              </div>}
             </div>
         </div>
       </div>

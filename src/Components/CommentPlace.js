@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Input } from "antd";
 import SendIcon from "@mui/icons-material/Send";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { CommentThisPost } from "../Redux/Actions/PostActions";
 import dateFormat, { masks } from "dateformat";
 import { CreateNotification } from "../Redux/Actions/NotificationAction";
@@ -13,9 +13,10 @@ export default function CommentPlace(props) {
   if (!userData) userData = {};
   
   const dispatch = useDispatch();
-  
+  const {commentLoading} = useSelector(state => state.LoadingReducer)
 
   const [dataCmt, setDataCmt] = useState('');
+
 
   const listCmtAfterSort = props.postInfo?.listCmt.sort((a,b) => {
     return (b.comment.id - a.comment.id)
@@ -61,6 +62,7 @@ export default function CommentPlace(props) {
             value={dataCmt}
             onChange={e => {setDataCmt(e.target.value)}}
             enterButton={<SendIcon />}
+            loading={commentLoading}
             size="md"
             className="px-2"
             onSearch={(value) => {
@@ -69,6 +71,7 @@ export default function CommentPlace(props) {
             //     postId: props.postInfo?.postDetail.id,
             //     content: value,
             //   });
+            dispatch({type: "IS_LOADING_COMMENT"})
               dispatch(
                 CommentThisPost({
                   userId: userData.id,

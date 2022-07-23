@@ -1,10 +1,12 @@
 import { Button } from "antd";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UpdateUserAvatar } from "../Redux/Actions/UserActions";
 export default function UploadImageProfile() {
   let userData = localStorage.getItem("login_user");
   userData = userData && JSON.parse(userData);
+
+  const {avatarUploading} = useSelector(state => state.LoadingReducer);
   const [selectedImage, setSelectedImage] = useState(null);
   const dispatch = useDispatch();
   return (
@@ -42,7 +44,8 @@ export default function UploadImageProfile() {
           }}
         />
       </div>
-      <Button className="col-span-5" type="danger" onClick={() => {
+      <Button loading={avatarUploading} className="col-span-5" type="danger" onClick={() => {
+        dispatch({type: "IS_LOADING_AVATAR"})
         dispatch(UpdateUserAvatar(userData.id, selectedImage))
       }}>UPDATE</Button>
     </div>

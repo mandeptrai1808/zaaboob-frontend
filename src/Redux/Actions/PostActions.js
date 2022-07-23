@@ -86,7 +86,7 @@ export const CommentThisPost = (_data, _userId) => {
     try {
       let { data } = await PostService.CommentThisPost(_data);
       dispatch(GetPostById(_data.postId))
-      console.log(_userId);
+      dispatch({type:"IS_LOADED_COMMENT"})
 
       if (_userId) {
         dispatch(GetPostsByUserId(_userId));

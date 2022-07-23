@@ -15,7 +15,7 @@ export default function AddFriend(props) {
 
   const dispatch = useDispatch();
   const { sendRequest } = useSelector((state) => state.UserReducer);
-
+  const {requestLoading} = useSelector(state => state.LoadingReducer)
   const [dataRequest, setDataRequest] = useState({
     userSend: userData.id,
     userGet: props.userInfo?.id,
@@ -75,7 +75,9 @@ export default function AddFriend(props) {
         </Button>
       ) : (
         <Button
+          loading={requestLoading}
           onClick={() => {
+            dispatch({type: "IS_LOADING_REQUEST"})
             dispatch({
                 type: "ADD_REQUEST",
                 content: dataRequest

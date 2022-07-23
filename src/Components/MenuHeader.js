@@ -28,7 +28,6 @@ export default function MenuHeader() {
   if (!userData) userData = {};
   const [isSearch, setIsSearch] = useState(false);
   const [haveNotSeenMess, setHaveNotSeenMess] = useState(false);
-  console.log(haveNotSeenMess)
 
   const navigate = useNavigate();
   const { isPage } = useSelector((state) => state.MenuReducer);

@@ -21,10 +21,12 @@ export const LoginUser = (_dataLogin) => {
         successNotification("Đăng nhập thành công", "Bạn đã đăng nhập thành công!!")
         localStorage.setItem('login_user', JSON.stringify(data.userFind));
         localStorage.setItem('access_token', data.token);
+        dispatch({type: "IS_LOADED_LOGIN"})
         dispatch({type: "IS_LOGIN"});
         window.location.reload()
     } catch (error) {
         console.log(error)
+        dispatch({type: "IS_LOADED_LOGIN"})
         errorNotification("Đăng nhập thất bại", "Kiểm tra lại mật khẩu hoặc tên đăng nhập!")
     }    
   }
@@ -53,9 +55,11 @@ export const RegisterUser = (_dataRegister) => {
     try {
         let {data} = await UserServices.Register(_dataRegister);
         successNotification("Đăng kí tài khoảng thành công", "Bạn đã đăng kí thành công!!")
+        dispatch({type: "IS_LOADED_LOGIN"})
 
     } catch (error) {
         console.log(error)
+        dispatch({type: "IS_LOADED_LOGIN"})
         errorNotification("Đăng kí thất bại", "Kiểm tra lại mật khẩu hoặc tên đăng nhập!")
     }
   }
@@ -68,7 +72,22 @@ export const UpdateUserAvatar = (_userId, _dataFile) => {
       successNotification("Cập nhật avatar thành công", "Bạn đã Cập nhật avatar thành công!!")
       localStorage.setItem('login_user', JSON.stringify(data.user));
       // localStorage.setItem('access_token', data.token);
+      dispatch({type: "IS_LOADED_AVATAR"})
+      dispatch({ type: "CLOSE_MODEL" });
       dispatch({type: "IS_LOGIN"});
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+export const UpdateUser = (_id,_data) => {
+  return async (dispatch) => {
+    try {
+      let {data} = await UserServices.UpdateUser(_id,_data);
+      localStorage.setItem('login_user', JSON.stringify(data.userFind));
+      dispatch({type: "IS_LOGIN"});
+      console.log(data);
     } catch (error) {
       console.log(error)
     }
@@ -115,6 +134,7 @@ export const sendRequestFriend = (_data) => {
   return async (dispatch) => {
     try {
       let {data} = await UserServices.sendRequestFriend(_data);
+      dispatch({type: "IS_LOADED_REQUEST"})
       // dispatch(getRequestHasSend(_data.userSend))
     } catch (error) {
       console.log(error)

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import { Button } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { Button } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import { RegisterUser } from "../Redux/Actions/UserActions";
 export default function Register() {
+  const {loginLoading} = useSelector(state => state.LoadingReducer)
   const dispatch = useDispatch();
     const navigate = useNavigate();
     const [dataRegister, setDataRegister] = useState({
@@ -82,8 +83,8 @@ export default function Register() {
           validators={["required"]}
           errorMessages={["this field is required"]}
         />
-        <Button color="success" className="w-full" type="submit" variant="contained">
-          Register
+        <Button loading={loginLoading}  className="w-full" type="danger" htmlType="submit" >
+          <p>Register</p>
         </Button>
         <p className="my-5">
             Have an account?{" "}
